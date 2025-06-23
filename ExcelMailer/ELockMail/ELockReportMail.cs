@@ -43,7 +43,6 @@ namespace ExcelMailer.ELockMail
                 }
 
                 Console.WriteLine($"Found {reportData.Rows.Count} records in database");
-                int count = 0;
                 foreach (DataRow row in reportData.Rows)
                 {
                     try
@@ -69,7 +68,6 @@ namespace ExcelMailer.ELockMail
 
                                 row["Battery %"] = !string.IsNullOrEmpty(battery) ? battery : "N/A";
                                 row["Actual Shackle Status"] = !string.IsNullOrEmpty(status) ? status : "N/A";
-                                count++;
                             }
                             else
                             {
@@ -77,30 +75,27 @@ namespace ExcelMailer.ELockMail
                                 row["Actual Shackle Status"] = "N/A";
                             }
                         }
-                        //else if (company == "IMZ")
-                        //{
-                        //    if (!string.IsNullOrWhiteSpace(assetId))
-                        //    {
-                        //        Console.WriteLine($"Fetching IMZ data for asset ID: {assetId}");
-                        //        var (battery, status, message) = await GetIMZDataSyncAsync(assetId);
+                        else if (company == "IMZ")
+                        {
+                            if (!string.IsNullOrWhiteSpace(assetId))
+                            {
+                                Console.WriteLine($"Fetching IMZ data for asset ID: {assetId}");
+                                var (battery, status, message) = await GetIMZDataSyncAsync(assetId);
 
-                        //        row["Battery %"] = !string.IsNullOrEmpty(battery) ? battery : "N/A";
-                        //        row["Actual Shackle Status"] = !string.IsNullOrEmpty(status) ? status : "N/A";
-                        //    }
-                        //    else
-                        //    {
-                        //        row["Battery %"] = "N/A";
-                        //        row["Actual Shackle Status"] = "N/A";
-                        //    }
-                        //}
+                                row["Battery %"] = !string.IsNullOrEmpty(battery) ? battery : "N/A";
+                                row["Actual Shackle Status"] = !string.IsNullOrEmpty(status) ? status : "N/A";
+                            }
+                            else
+                            {
+                                row["Battery %"] = "N/A";
+                                row["Actual Shackle Status"] = "N/A";
+                            }
+                        }
                         else
                         {
                             // Handle unknown companies
                             row["Battery %"] = "N/A nnn";
                             row["Actual Shackle Status"] = "N/A nnnn";
-                        }
-                        if (count >= 5) {
-                            break;
                         }
                     }
                     catch (Exception rowEx)
@@ -168,7 +163,7 @@ namespace ExcelMailer.ELockMail
                     new SqlParameter("@pageSize", 50000) // Get all records
                 };
 
-                DataSet ds = clsSQLExecute.Exec_Dataset_sp("[dbo].[GetWHLockDetailsByDate_Test_v5]", prm);
+                DataSet ds = clsSQLExecute.Exec_Dataset_sp("[dbo].[GetWHLockDetailsByDate_Test_v6]", prm);
 
                 DataTable dt = ds.Tables[0];
                 DataTable summaryTable = ds.Tables.Count > 2 ? ds.Tables[2] : null;
