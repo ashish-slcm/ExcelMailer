@@ -5,30 +5,26 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace ExcelMailer.ELockMail
 {
     public static class SendMail
     {
-        private const string RECIPIENT_EMAIL = "ashish.chaudhary@slc-india.com";
-
-        // Additional Recipients (comma-separated for multiple recipients)
-        private const string CC_EMAILS = ""; // Optional CC recipients
-        private const string BCC_EMAILS = "ashutosh.s@slc-india.com"; // BCC recipients
-
-        // Email Configuration - Update these with your SMTP settings
-        private const string SMTP_SERVER = "smtp.gmail.com"; // Gmail SMTP server
-        private const string SMTP_PORT = "587"; // TLS port for Gmail
-        private const string SENDER_EMAIL = "workwithaashuu@gmail.com"; // Your Gmail account
-        private const string SENDER_PASSWORD = "yrvh wiey tkby lkvt"; // Gmail App Password (NOT regular password)
-        private const string SENDER_NAME = "AgriSuraksha E-Lock System"; // Display name
+        private static readonly string RECIPIENT_EMAIL = ConfigurationManager.AppSettings["RECIPIENT_EMAIL"];
+        private static readonly string CC_EMAILS = ConfigurationManager.AppSettings["CC_EMAILS"];
+        private static readonly string BCC_EMAILS = ConfigurationManager.AppSettings["BCC_EMAILS"];
+        private static readonly string SMTP_SERVER = ConfigurationManager.AppSettings["SMTP_SERVER"];
+        private static readonly string SMTP_PORT = ConfigurationManager.AppSettings["SMTP_PORT"];
+        private static readonly string SENDER_EMAIL = ConfigurationManager.AppSettings["SENDER_EMAIL"];
+        private static readonly string SENDER_PASSWORD = ConfigurationManager.AppSettings["SENDER_PASSWORD"];
+        private static readonly string SENDER_NAME = ConfigurationManager.AppSettings["SENDER_NAME"];
+        private static readonly string ERROR_NOTIFICATION_EMAILS = ConfigurationManager.AppSettings["ERROR_NOTIFICATION_EMAILS"];
 
         // Email Settings
         private const bool ENABLE_SSL = true; // Always true for Gmail
         private const int EMAIL_TIMEOUT = 30000; // 30 seconds timeout
 
-        // Error Notification Recipients (for system errors)
-        private const string ERROR_NOTIFICATION_EMAILS = "ashutosh.s@slc-india.com";
 
 
         public static async Task SendEmailWithAttachmentAsync(byte[] fileData, SummaryData summaryData, DateTime reportDate)
