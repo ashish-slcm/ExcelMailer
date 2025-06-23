@@ -1,13 +1,4 @@
-﻿using System;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Collections.Generic;
-using ClosedXML.Excel;
-using DALUtility;
-using ExcelMailer.ELockMail;
+﻿using ExcelMailer.ELockMail;
 
 public class ExcelMailExport
 {
@@ -15,9 +6,9 @@ public class ExcelMailExport
     {
         try
         {
-            Console.WriteLine("Calling SendDailyReport");
+            Console.WriteLine("Calling SendDailyReport Method");
             await ELockReportMail.SendDailyReportAsync();
-            Console.WriteLine("Closing SendDailyReport");
+            Console.WriteLine("Closing SendDailyReport Method");
         }
         catch (Exception ex)
         {
